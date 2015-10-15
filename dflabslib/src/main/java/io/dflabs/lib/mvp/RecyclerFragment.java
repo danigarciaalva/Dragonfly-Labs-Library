@@ -16,9 +16,9 @@ import io.dflabs.lib.ui.SuperRecyclerView;
  * Created by Daniel García Alvarado on 8/27/15.
  * Gastalon - danielgarcia
  */
+@SuppressWarnings("unused")
 public abstract class RecyclerFragment<T, R extends RecyclerView.Adapter &
-        RecyclerFragment.SuperRecyclerAdapter<T>> extends BaseFragment
-        implements SwipeRefreshLayout.OnRefreshListener {
+        RecyclerFragment.SuperRecyclerAdapter<T>> extends BaseFragment {
 
     protected RecyclerView mRecyclerView;
     TextView mEmptyTextView;
@@ -43,6 +43,10 @@ public abstract class RecyclerFragment<T, R extends RecyclerView.Adapter &
 
     protected void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         this.mRecyclerView.setLayoutManager(layoutManager);
+    }
+
+    protected void setItemAnimator(RecyclerView.ItemAnimator itemAnimator) {
+        this.mRecyclerView.setItemAnimator(itemAnimator);
     }
 
     protected void setEmptyView(View v) {

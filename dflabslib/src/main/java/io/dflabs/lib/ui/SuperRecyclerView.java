@@ -15,6 +15,7 @@ import android.widget.TextView;
  * Created by Daniel García Alvarado on 10/11/15.
  * Gastalon - danielgarcia
  */
+@SuppressWarnings("unused")
 public class SuperRecyclerView extends FrameLayout{
     public static final String SUPER_RECYCLER_VIEW_TAG = "super_recycler_view_tag";
     private RecyclerView recyclerView;

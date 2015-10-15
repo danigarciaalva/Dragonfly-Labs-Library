@@ -1,7 +1,12 @@
 package io.dflabs.lib.validators;
 
 import android.support.design.widget.TextInputLayout;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

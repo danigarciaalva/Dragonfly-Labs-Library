@@ -7,12 +7,11 @@ import android.view.InflateException;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.dflabs.lib.R;
-
 /**
  * Created by Daniel García Alvarado on 10/10/15.
  * Crédito Real - danielgarcia
  */
+@SuppressWarnings("unused")
 public abstract class BaseActivity extends AppCompatActivity {
 
     Toolbar mToolbar;
