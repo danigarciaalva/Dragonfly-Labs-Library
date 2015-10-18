@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.StringRes;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import java.io.File;
@@ -43,20 +44,67 @@ public class CameraUtils {
         if (takePictureIntent.resolveActivity(context.getPackageManager()) != null) {
             try {
                 photoFile = createImageFile();
-            } catch (IOException ignored) {
-
+            } catch (IOException e) {
+                onPhotoTaken.onPhotoError(e);
             }
             if (photoFile != null) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
                 context.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
+        } else {
+            onPhotoTaken.onPhotoError(new IllegalStateException("Not camera app installed"));
+        }
+    }
+
+    public void takePhoto(Fragment context, OnPhotoTaken onPhotoTaken) {
+        this.context = context.getContext();
+        this.onPhotoTaken = onPhotoTaken;
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(this.context.getPackageManager()) != null) {
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+                onPhotoTaken.onPhotoError(e);
+            }
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                context.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        } else {
+            onPhotoTaken.onPhotoError(new IllegalStateException("Not camera app installed"));
         }
     }
 
     public void importPhoto(AppCompatActivity context, @StringRes int message,
                             OnPhotoPhotoImport callback, boolean allowMultiple) {
         this.context = context;
+        this.onPhotoPhotoImport = callback;
+        if (callback == null) {
+            throw new NullPointerException("OnMultiplePhotoImport must not be null");
+        }
+        if (allowMultiple) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                context.startActivityForResult(Intent.createChooser(intent, context.getString(message)),
+                        REQUEST_IMPORT_PHOTO);
+            } else {
+                throw new IllegalArgumentException("Multiple import require minimum API 18");
+            }
+        } else {
+            Intent i = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            context.startActivityForResult(i, REQUEST_IMPORT_PHOTO);
+        }
+    }
+
+    public void importPhoto(Fragment context, @StringRes int message,
+                            OnPhotoPhotoImport callback, boolean allowMultiple) {
+        this.context = context.getContext();
         this.onPhotoPhotoImport = callback;
         if (callback == null) {
             throw new NullPointerException("OnMultiplePhotoImport must not be null");

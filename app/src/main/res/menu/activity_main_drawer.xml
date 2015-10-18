@@ -3,33 +3,33 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camara"
-            android:icon="@android:drawable/ic_menu_camera"
-            android:title="Import"/>
+            android:id="@+id/nav_recyclers"
+            android:icon="@android:drawable/ic_menu_sort_alphabetically"
+            android:title="@string/menu_recyclers"/>
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_forms"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="@string/menu_forms"/>
+        <item
+            android:id="@+id/nav_camera"
             android:icon="@android:drawable/ic_menu_gallery"
-            android:title="Gallery"/>
+            android:title="@string/menu_camera"/>
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@android:drawable/ic_menu_slideshow"
-            android:title="Slideshow"/>
-        <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_prefs"
             android:icon="@android:drawable/ic_menu_manage"
-            android:title="Tools"/>
+            android:title="@string/menu_prefs"/>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/menu_about">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@android:drawable/ic_menu_share"
-                android:title="Share"/>
+                android:title="@string/menu_fork"/>
             <item
                 android:id="@+id/nav_send"
                 android:icon="@android:drawable/ic_menu_send"
-                android:title="Send"/>
+                android:title="@string/menu_contribution"/>
         </menu>
     </item>
 

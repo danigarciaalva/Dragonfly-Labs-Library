@@ -43,7 +43,6 @@ public class CameraImportTask extends AsyncTask<Void, CameraImportTask.FileBitma
                 if (is != null) {
                     Bitmap bitmap = BitmapFactory.decodeStream(is);
                     publishProgress(new FileBitmap(bitmap, new File(uri.getPath())));
-                    bitmap.recycle();
                     is.close();
                 }
             }
