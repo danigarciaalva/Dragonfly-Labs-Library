@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import io.dflabs.sample.activities.ToolbarActivity;
 import io.dflabs.sample.presenters.FruitFragmentPresenter;
 
 public class MainActivity extends AppCompatActivity
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_camera) {
             fragment = CameraFragment.newInstance();
+            startActivity(new Intent(this, ToolbarActivity.class));
         } else if (id == R.id.nav_prefs) {
 
         } else if (id == R.id.nav_share) {

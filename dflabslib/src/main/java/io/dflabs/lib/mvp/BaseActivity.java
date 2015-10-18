@@ -32,7 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         if (toolbarEnabled) {
-            View toolbar = findToolbar(android.R.id.content);
+            View toolbar = findToolbar(findViewById(android.R.id.content));
             if (toolbar != null) {
                 mToolbar = (Toolbar) toolbar;
                 setupToolbar();
@@ -43,15 +43,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private View findToolbar(int id) {
-        View view = findViewById(id);
+    private View findToolbar(View view) {
         if (view instanceof Toolbar) {
             return view;
         }
         if (view instanceof ViewGroup) {
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                 View child = ((ViewGroup) view).getChildAt(i);
-                View possibleToolbar = findToolbar(child.getId());
+                View possibleToolbar = findToolbar(child);
                 if (possibleToolbar != null && possibleToolbar instanceof Toolbar)
                     return possibleToolbar;
             }
