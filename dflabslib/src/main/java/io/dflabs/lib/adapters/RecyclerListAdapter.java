@@ -16,7 +16,7 @@ public abstract class RecyclerListAdapter<T, VH extends RecyclerView.ViewHolder>
         items = new ArrayList<>();
     }
 
-    List<T> items;
+    protected List<T> items;
 
     public void update(List<T> items, boolean append) {
         if (this.items == null) {
