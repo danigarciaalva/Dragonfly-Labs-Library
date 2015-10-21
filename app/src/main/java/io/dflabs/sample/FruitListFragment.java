@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import io.dflabs.lib.mvp.RecyclerListFragment;
+import io.dflabs.lib.utils.Prefs;
 import io.dflabs.sample.adapters.FruitAdapter;
 import io.dflabs.sample.models.Fruit;
 import io.dflabs.sample.presenters.FruitFragmentPresenter;
@@ -47,6 +48,8 @@ public class FruitListFragment extends RecyclerListFragment<Fruit, FruitAdapter>
     @Override
     protected void refresh() {
         mFruitPresenter.refresh();
+        Prefs.setDefaultContext(getContext());
+        Prefs.instance().bool("");
     }
 
     @Override

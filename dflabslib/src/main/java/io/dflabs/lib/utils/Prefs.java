@@ -11,14 +11,25 @@ import com.google.gson.Gson;
 @SuppressWarnings("unused")
 public class Prefs {
 
-    public static final String PREFS_NAME = "gnpPreferences";
+    private static String PREFS_NAME;
     private static Prefs singleton;
     private Context context;
 
     public Prefs(Context context) {
         this.context = context;
+        PREFS_NAME = context.getPackageName();
     }
 
+    public static void setDefaultContext(Context context) {
+        with(context);
+    }
+
+    public static Prefs instance() {
+        if (singleton == null || singleton.context == null) {
+            throw new IllegalArgumentException("Call setDefaultContext(context) first");
+        }
+        return singleton;
+    }
 
     public static Prefs with(Context context) {
         if (singleton == null) {
@@ -39,24 +50,43 @@ public class Prefs {
      * @param key Key for preferences
      * @return intValue
      */
-    public int getInt(String key) {
+    public int integer(String key) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt(key, -1);
     }
 
-    public int getInt(String key, int defaultValue) {
+    public int integer(String key, int defaultValue) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
                 .getInt(key, defaultValue);
     }
 
-    public String getString(String key) {
+    public String string(String key) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(key, "");
     }
 
-    public long getLong(String key) {
+    public String string(String key, String defaultValue) {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .getString(key, defaultValue);
+    }
+
+    public boolean bool(String key) {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getBoolean(key, false);
+    }
+
+    public boolean bool(String key, boolean defaultValue) {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .getBoolean(key, defaultValue);
+    }
+
+    public long number(String key) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getLong(key, -1L);
     }
 
-    public Object getObject(String key, Class<?> fromClass) {
+    public long number(String key, long defaultValue) {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .getLong(key, defaultValue);
+    }
+
+    public Object object(String key, Class<?> fromClass) {
         try {
             String json = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(key, null);
             if (json != null) {
