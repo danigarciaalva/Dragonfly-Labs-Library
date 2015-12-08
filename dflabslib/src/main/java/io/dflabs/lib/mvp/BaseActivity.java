@@ -38,7 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 setupToolbar();
             } else {
                 throw new InflateException("You must add a Toolbar on the Activity or " +
-                        "setToolbarEnabled(false)");
+                        "setToolbarEnabled(false) before setContentView()");
             }
         }
     }

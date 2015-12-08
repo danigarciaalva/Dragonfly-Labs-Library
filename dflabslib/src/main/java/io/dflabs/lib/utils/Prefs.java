@@ -105,6 +105,13 @@ public class Prefs {
                 .commit();
     }
 
+    public void putBool(String key, boolean value) {
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putBoolean(key, value)
+                .commit();
+    }
+
     public void putString(String key, String value) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
                 .edit()

@@ -1,13 +1,11 @@
 package io.dflabs.lib.mvp;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -25,13 +23,15 @@ public abstract class RecyclerListFragment<T, R extends RecyclerListAdapter<T, ?
         extends BaseFragment {
 
     protected RecyclerView mRecyclerView;
-    TextView mEmptyTextView;
-    FrameLayout mEmptyLayout;
+    protected TextView mEmptyTextView;
+    protected FrameLayout mEmptyLayout;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     protected R mAdapter;
     private RecyclerView.ItemAnimator mItemAnimator;
     private RecyclerView.LayoutManager mLayoutManager;
+    int pastVisibleItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -62,6 +62,33 @@ public abstract class RecyclerListFragment<T, R extends RecyclerListAdapter<T, ?
         mRecyclerView.setItemAnimator(mItemAnimator);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
+
+        if (mLayoutManager instanceof LinearLayoutManager) {
+            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mLayoutManager;
+            mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    if (dy > 0) {
+                        visibleItemCount = linearLayoutManager.getChildCount();
+                        totalItemCount = linearLayoutManager.getItemCount();
+                        pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
+
+                        if (loading) {
+                            if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                                loading = false;
+                                onRecyclerNeedsMoreData();
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    protected abstract void onRecyclerNeedsMoreData();
+
+    protected void onRecyclerEndLoadingMoreData() {
+        loading = true;
     }
 
     protected abstract void refresh();
@@ -85,7 +112,6 @@ public abstract class RecyclerListFragment<T, R extends RecyclerListAdapter<T, ?
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(true);
                 mOnRefreshListener.onRefresh();
-                stopRefreshing();
             }
         });
     }

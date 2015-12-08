@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
  */
 public abstract class BaseFragment extends Fragment {
 
-    private BaseFragmentPresenter mPresenter;
+    private BasePresenter mPresenter;
 
     @Override
     public void onResume() {
@@ -32,7 +32,7 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroyView();
     }
 
-    protected <T extends BaseFragmentPresenter> void setupPresenter(T basePresenter) {
+    protected void setupPresenter(BasePresenter basePresenter) {
         this.mPresenter = basePresenter;
     }
 

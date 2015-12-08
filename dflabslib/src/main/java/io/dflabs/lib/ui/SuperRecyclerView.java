@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -16,7 +17,7 @@ import android.widget.TextView;
  * Gastalon - danielgarcia
  */
 @SuppressWarnings("unused")
-public class SuperRecyclerView extends FrameLayout{
+public class SuperRecyclerView extends FrameLayout {
     public static final String SUPER_RECYCLER_VIEW_TAG = "super_recycler_view_tag";
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeToRefreshLayout;
@@ -60,6 +61,7 @@ public class SuperRecyclerView extends FrameLayout{
                 LayoutParams.MATCH_PARENT));
 
         emptyTextView = new TextView(getContext());
+        emptyTextView.setGravity(Gravity.CENTER);
         emptyTextView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT));
 
