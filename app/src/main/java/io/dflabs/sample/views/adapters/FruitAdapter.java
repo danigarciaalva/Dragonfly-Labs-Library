@@ -16,15 +16,16 @@ import io.dflabs.sample.models.pojos.Fruit;
  */
 public class FruitAdapter extends RecyclerListAdapter<Fruit, FruitAdapter.FruitViewHolder> {
 
-    @Override
-    public FruitViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_fruit, parent, false);
-        return new FruitViewHolder(v);
-    }
 
     @Override
     protected void onBindViewHolder(FruitViewHolder holder, int position, Fruit item) {
         holder.nameTextView.setText(item.getName());
+    }
+
+    @Override
+    protected FruitViewHolder onCreateViewHolder(ViewGroup parent, int viewType, RecyclerView recyclerView) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_fruit, parent, false);
+        return new FruitViewHolder(v);
     }
 
     public class FruitViewHolder extends RecyclerView.ViewHolder {

@@ -9,5 +9,5 @@ import io.dflabs.sample.models.pojos.Fruit;
  * DragonflyLabsLibrary - danielgarcia
  */
 public interface FruitsCallback {
-    void onSuccessFruitsLoaded(ArrayList<Fruit> data);
+    void onSuccessFruitsLoaded(ArrayList<Fruit> data, boolean bottomRefresh);
 }

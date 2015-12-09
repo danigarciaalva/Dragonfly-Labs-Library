@@ -22,11 +22,11 @@ public class FruitPresenter extends BasePresenter {
         this.callback = callback;
     }
 
-    public void refresh() {
+    public void refresh(boolean bottomRefresh) {
         ArrayList<Fruit> data = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
             data.add(new Fruit("Data " + new Random().nextDouble()));
         }
-        callback.onSuccessFruitsLoaded(data);
+        callback.onSuccessFruitsLoaded(data, bottomRefresh);
     }
 }

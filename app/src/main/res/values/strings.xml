@@ -17,4 +17,5 @@
     <string name="contributor_link">http://github.com/danigarciaalva</string>
     <string name="take_photo">Take photo</string>
     <string name="import_photo">Import photo</string>
+    <string name="no_data">Empty data</string>
 </resources>
