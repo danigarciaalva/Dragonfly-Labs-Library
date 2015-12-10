@@ -46,7 +46,7 @@ public abstract class RecyclerListAdapter<T, VH extends RecyclerView.ViewHolder>
         if (items.get(position) == null) {
             return -1;
         }
-        return super.getItemViewType(position);
+        return getItemType(position);
     }
 
     @Override
@@ -82,6 +82,8 @@ public abstract class RecyclerListAdapter<T, VH extends RecyclerView.ViewHolder>
             progressBar = (ProgressBar) itemView;
         }
     }
+
+    protected abstract int getItemType(int position);
 
     protected abstract void onBindViewHolder(VH holder, int position, T item);
 
