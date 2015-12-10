@@ -3,6 +3,7 @@ package io.dflabs.lib.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.ColorRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -183,7 +184,7 @@ public class SuperRecyclerView2 extends FrameLayout {
             return superRecyclerView;
         }
 
-        public SuperRecyclerView2 inflateIn(@LayoutRes int parentViewRes) throws InflateException {
+        public SuperRecyclerView2 inflateIn(@IdRes int parentViewRes) throws InflateException {
             SuperRecyclerView2 superRecyclerView = createSuperRecycler();
             try {
                 ViewGroup parentView = (ViewGroup) LayoutInflater.from(context)
