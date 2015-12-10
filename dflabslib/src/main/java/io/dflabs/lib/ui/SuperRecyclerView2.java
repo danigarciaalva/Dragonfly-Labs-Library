@@ -184,18 +184,6 @@ public class SuperRecyclerView2 extends FrameLayout {
             return superRecyclerView;
         }
 
-        public SuperRecyclerView2 inflateIn(@IdRes int parentViewRes) throws InflateException {
-            SuperRecyclerView2 superRecyclerView = createSuperRecycler();
-            try {
-                ViewGroup parentView = (ViewGroup) LayoutInflater.from(context)
-                        .inflate(parentViewRes, null);
-                parentView.addView(superRecyclerView);
-            } catch (Exception e) {
-                throw new InflateException("parentViewRes must be a ViewGroup");
-            }
-            return superRecyclerView;
-        }
-
         public SuperRecyclerView2 create() {
             return createSuperRecycler();
         }
