@@ -11,29 +11,31 @@ import io.dflabs.lib.interfaces.OnLoadMoreItems;
  * DragonflyLabsLibrary - danielgarcia
  */
 public class LoadMoreItems extends RecyclerView.OnScrollListener {
-
-    private RecyclerListAdapter adapter;
-    private final LinearLayoutManager mLinearLayoutManager;
+    private LinearLayoutManager mLinearLayoutManager;
     private OnLoadMoreItems onLoadMoreItems;
-    private int previousTotal = 0; // The total number of items in the dataset after the last load
-    private boolean loading = true; // True if we are still waiting for the last set of data to load.
-    int firstVisibleItem, visibleItemCount, totalItemCount;
+    private RecyclerListAdapter mAdapter;
+    private boolean loading = true;
+    private int previousTotal = 0, currentPage = 1, adapterType = 0, type = 0;
 
-    private int currentPage = 1;
-
-    public LoadMoreItems(RecyclerListAdapter adapter, LinearLayoutManager linearLayoutManager, OnLoadMoreItems onLoadMoreItems) {
-        this.adapter = adapter;
-        this.mLinearLayoutManager = linearLayoutManager;
+    public LoadMoreItems(OnLoadMoreItems onLoadMoreItems) {
         this.onLoadMoreItems = onLoadMoreItems;
     }
 
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-
-        visibleItemCount = recyclerView.getChildCount();
-        totalItemCount = mLinearLayoutManager.getItemCount();
-        firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+        if (type == 0) {
+            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+            if (layoutManager instanceof LinearLayoutManager) {
+                type = 1;
+                mLinearLayoutManager = (LinearLayoutManager) layoutManager;
+            } else {
+                throw new RuntimeException("LayoutManager must extends LinearLayout");
+            }
+        }
+        int visibleItemCount = recyclerView.getChildCount();
+        int totalItemCount = mLinearLayoutManager.getItemCount();
+        int firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
 
         if (loading) {
             if (totalItemCount > previousTotal + 1) {
@@ -44,10 +46,18 @@ public class LoadMoreItems extends RecyclerView.OnScrollListener {
         int visibleThreshold = 1;
         if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
             currentPage++;
-            adapter.startEndlessLoading();
+            if (adapterType == 0) {
+                RecyclerView.Adapter adapter = recyclerView.getAdapter();
+                if (adapter instanceof RecyclerListAdapter) {
+                    adapterType = 1;
+                    mAdapter = (RecyclerListAdapter) adapter;
+                } else {
+                    throw new RuntimeException("Adapter must extends RecyclerListAdapter");
+                }
+            }
+            mAdapter.startEndlessLoading();
             onLoadMoreItems.onLoadMoreItems(currentPage);
             loading = true;
         }
     }
-
 }

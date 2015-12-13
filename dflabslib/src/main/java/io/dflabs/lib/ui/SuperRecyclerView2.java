@@ -3,8 +3,6 @@ package io.dflabs.lib.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.ColorRes;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,8 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.InflateException;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -31,6 +27,7 @@ import io.dflabs.lib.mvp.RefreshItems;
  * Created by Daniel García Alvarado on 12/8/15.
  * DragonflyLabsLibrary - danielgarcia
  */
+@SuppressWarnings({"unchecked", "unused", "deprecation"})
 public class SuperRecyclerView2 extends FrameLayout {
 
     public RecyclerView recyclerView;
@@ -38,6 +35,8 @@ public class SuperRecyclerView2 extends FrameLayout {
     public View emptyView;
     public View contentView;
     private RefreshItems swipeRefreshListener;
+    private LoadMoreItems loadMoreItems;
+    private OnLoadMoreItems bottomRefreshListener;
 
     public SuperRecyclerView2(Context context) {
         super(context);
@@ -66,6 +65,9 @@ public class SuperRecyclerView2 extends FrameLayout {
     public void endRefreshing() {
         if (swipeRefreshLayout != null) {
             swipeRefreshLayout.setRefreshing(false);
+            recyclerView.clearOnScrollListeners();
+            loadMoreItems = new LoadMoreItems(bottomRefreshListener);
+            recyclerView.addOnScrollListener(loadMoreItems);
         }
     }
 
@@ -99,7 +101,7 @@ public class SuperRecyclerView2 extends FrameLayout {
         @ColorRes
         private int emptyMessageColor;
         private float textSize;
-        private OnLoadMoreItems loadMoreItems;
+        private OnLoadMoreItems onLoadMoreItems;
 
         public Builder(Context context) {
             this.context = context;
@@ -131,7 +133,7 @@ public class SuperRecyclerView2 extends FrameLayout {
          */
         public Builder endlessScroll(boolean enabled, OnLoadMoreItems callback) {
             this.endlessScroll = enabled;
-            this.loadMoreItems = callback;
+            this.onLoadMoreItems = callback;
             return this;
         }
 
@@ -195,6 +197,19 @@ public class SuperRecyclerView2 extends FrameLayout {
 
             superRecyclerView2.recyclerView = createRecycler();
 
+            if (endlessScroll) {
+                if (onLoadMoreItems != null) {
+                    superRecyclerView2.bottomRefreshListener = this.onLoadMoreItems;
+                    superRecyclerView2.recyclerView.clearOnScrollListeners();
+                    superRecyclerView2.loadMoreItems = new LoadMoreItems(onLoadMoreItems);
+                    superRecyclerView2.recyclerView
+                            .addOnScrollListener(superRecyclerView2.loadMoreItems);
+                } else {
+                    throw new NullPointerException("Endless Scroll feature needs OnLoadMoreItems " +
+                            "to be implemented");
+                }
+            }
+
             if (pullToRefresh) {
                 superRecyclerView2.swipeRefreshLayout = new SwipeRefreshLayout(context);
                 superRecyclerView2.swipeRefreshLayout.setLayoutParams(
@@ -253,14 +268,6 @@ public class SuperRecyclerView2 extends FrameLayout {
             recyclerView.setAdapter(adapter);
             recyclerView.setItemAnimator(animator);
             recyclerView.setLayoutManager(layoutManager);
-            if (endlessScroll) {
-                if (loadMoreItems != null) {
-                    recyclerView.addOnScrollListener(new LoadMoreItems(adapter, layoutManager, this.loadMoreItems));
-                } else {
-                    throw new NullPointerException("Endless Scroll feature needs OnLoadMoreItems " +
-                            "to be implemented");
-                }
-            }
             return recyclerView;
         }
     }

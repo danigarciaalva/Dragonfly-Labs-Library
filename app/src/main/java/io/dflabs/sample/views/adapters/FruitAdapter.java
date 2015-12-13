@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import io.dflabs.lib.adapters.RecyclerListAdapter;
 import io.dflabs.sample.R;
 import io.dflabs.sample.models.pojos.Fruit;
@@ -16,6 +18,10 @@ import io.dflabs.sample.models.pojos.Fruit;
  */
 public class FruitAdapter extends RecyclerListAdapter<Fruit, FruitAdapter.FruitViewHolder> {
 
+    @Override
+    protected int getItemType(int position) {
+        return 0;
+    }
 
     @Override
     protected void onBindViewHolder(FruitViewHolder holder, int position, Fruit item) {
@@ -23,16 +29,19 @@ public class FruitAdapter extends RecyclerListAdapter<Fruit, FruitAdapter.FruitV
     }
 
     @Override
-    protected FruitViewHolder onCreateViewHolder(ViewGroup parent, int viewType, RecyclerView recyclerView) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_fruit, parent, false);
-        return new FruitViewHolder(v);
+    protected FruitViewHolder onCreateViewHolder(ViewGroup parent, int viewType,
+                                                 RecyclerView recyclerView) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_fruit, parent, false);
+        return new FruitViewHolder(view);
     }
 
     public class FruitViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView;
+
         public FruitViewHolder(View itemView) {
             super(itemView);
-            nameTextView = (TextView)itemView.findViewById(R.id.item_fruit_name);
+            nameTextView = (TextView) itemView.findViewById(R.id.item_fruit_name);
         }
     }
 }

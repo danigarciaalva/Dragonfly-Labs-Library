@@ -1,6 +1,7 @@
 package io.dflabs.lib.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -67,6 +68,9 @@ public abstract class RecyclerListAdapter<T, VH extends RecyclerView.ViewHolder>
             progressBar.setLayoutParams(
                     new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT));
+            float scale = parent.getContext().getResources().getDisplayMetrics().density;
+            int dp = (int) (8 * scale + 0.5f);
+            progressBar.setPadding(dp, dp, dp, dp);
             return (VH) new ProgressViewHolder(progressBar);
         } else {
             return onCreateViewHolder(parent, viewType, null);
@@ -95,6 +99,7 @@ public abstract class RecyclerListAdapter<T, VH extends RecyclerView.ViewHolder>
     }
 
     public void startEndlessLoading() {
+        Log.d("Endless Scroll", "Called");
         endlessScrollActive = true;
         items.add(null);
         notifyDataSetChanged();

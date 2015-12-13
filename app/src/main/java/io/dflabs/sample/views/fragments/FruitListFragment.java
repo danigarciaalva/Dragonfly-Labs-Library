@@ -65,7 +65,7 @@ public class FruitListFragment extends Fragment implements FruitsCallback {
                     }
                 })
                 .layoutManager(new LinearLayoutManager(getContext()))
-                .inflateIn(R.id.fr_fruit_list);
+                .inflateIn((ViewGroup) view);
 
         mSuperRecyclerView2.startRefreshing();
     }
