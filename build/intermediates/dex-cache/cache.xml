@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/desarrollo/dragonflylabs/android/DragonflyLabsLibrary/app/build/intermediates/exploded-aar/io.dflabs/dflabslib/1.0.21/jars/classes.jar"
+        jar="/desarrollo/dragonflylabs/android/DragonflyLabsLibrary/app/build/intermediates/exploded-aar/io.dflabs/dflabslib/1.0.22/jars/classes.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="8fccdd2a3b5604fac5052adf8fa2550992c226bc">
-        <dex dex="/desarrollo/dragonflylabs/android/DragonflyLabsLibrary/app/build/intermediates/pre-dexed/debug/classes-a37292397bc9274b53cebd7abaf45fa1035ba42c.jar" />
+        sha1="7d22754cb03f2524d6820dae6671a7aedd2f88be">
+        <dex dex="/desarrollo/dragonflylabs/android/DragonflyLabsLibrary/app/build/intermediates/pre-dexed/debug/classes-5117d240d2f3875d35c4dc0deba49a49de345a9d.jar" />
     </item>
 
 </items>
