@@ -54,9 +54,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private View findToolbar(View view) {
-        if (view instanceof Toolbar) {
-            return view;
-        }
+        if (view instanceof Toolbar) return view;
         if (view instanceof ViewGroup) {
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                 View child = ((ViewGroup) view).getChildAt(i);
@@ -71,24 +69,24 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mPresenter != null) {
-            mPresenter.onResume();
-        }
+        if (mPresenter != null) mPresenter.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mPresenter != null) {
-            mPresenter.onPause();
-        }
+        if (mPresenter != null) mPresenter.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) mPresenter.onDestroy();
     }
 
     private void setupToolbar() {
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     protected <T extends BasePresenter> void setupPresenter(T basePresenter) {

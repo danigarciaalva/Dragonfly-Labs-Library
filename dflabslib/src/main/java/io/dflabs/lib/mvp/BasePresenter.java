@@ -21,4 +21,8 @@ public abstract class BasePresenter {
     public void onPause() {
 
     }
+
+    public void onDestroy() {
+
+    }
 }

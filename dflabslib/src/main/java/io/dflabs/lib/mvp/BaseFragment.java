@@ -13,26 +13,23 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mPresenter != null) {
-            mPresenter.onResume();
-        }
+        if (mPresenter != null) mPresenter.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (mPresenter != null) {
-            mPresenter.onPause();
-        }
+        if (mPresenter != null) mPresenter.onPause();
     }
 
     @Override
     public void onDestroyView() {
+        if (mPresenter != null) mPresenter.onDestroy();
         mPresenter = null;
         super.onDestroyView();
     }
 
-    protected void setupPresenter(BasePresenter basePresenter) {
+    protected <T extends BasePresenter> void setupPresenter(T basePresenter) {
         this.mPresenter = basePresenter;
     }
 
