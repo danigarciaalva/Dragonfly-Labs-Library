@@ -18,15 +18,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     Toolbar mToolbar;
     private BasePresenter mPresenter;
     private boolean toolbarEnabled;
+    private boolean homeAsUpEnabled;
 
     protected void setToolbarEnabled(boolean enabled) {
         this.toolbarEnabled = enabled;
+    }
+
+    protected void setHomeAsUpEnabled(boolean enabled) {
+        this.homeAsUpEnabled = enabled;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         toolbarEnabled = true;
+        homeAsUpEnabled = true;
     }
 
     @Override
@@ -86,7 +92,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null && homeAsUpEnabled)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     protected <T extends BasePresenter> void setupPresenter(T basePresenter) {
