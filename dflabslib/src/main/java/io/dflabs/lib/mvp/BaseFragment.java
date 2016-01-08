@@ -11,6 +11,12 @@ public abstract class BaseFragment extends Fragment {
     private BasePresenter mPresenter;
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (mPresenter != null) mPresenter.onStart();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (mPresenter != null) mPresenter.onResume();
@@ -23,10 +29,15 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        if (mPresenter != null) mPresenter.onStop();
+    }
+
+    @Override
     public void onDestroyView() {
-        if (mPresenter != null) mPresenter.onDestroy();
-        mPresenter = null;
         super.onDestroyView();
+        mPresenter = null;
     }
 
     protected <T extends BasePresenter> void setupPresenter(T basePresenter) {
