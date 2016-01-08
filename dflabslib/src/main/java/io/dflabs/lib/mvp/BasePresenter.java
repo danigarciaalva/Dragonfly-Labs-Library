@@ -14,6 +14,11 @@ public abstract class BasePresenter {
         this.context = context;
     }
 
+
+    public void onStart() {
+
+    }
+
     public void onResume() {
 
     }
@@ -22,7 +27,7 @@ public abstract class BasePresenter {
 
     }
 
-    public void onDestroy() {
+    public void onStop() {
 
     }
 }

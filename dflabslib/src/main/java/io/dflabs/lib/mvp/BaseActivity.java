@@ -73,6 +73,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (mPresenter != null) mPresenter.onStart();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (mPresenter != null) mPresenter.onResume();
@@ -85,9 +91,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mPresenter != null) mPresenter.onDestroy();
+    protected void onStop() {
+        super.onStop();
+        if (mPresenter != null) mPresenter.onStop();
     }
 
     private void setupToolbar() {
