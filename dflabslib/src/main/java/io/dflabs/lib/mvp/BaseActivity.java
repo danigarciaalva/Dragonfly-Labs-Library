@@ -33,8 +33,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         toolbarEnabled = true;
         homeAsUpEnabled = true;
+        mPresenter = getPresenter();
         if (mPresenter != null) mPresenter.onCreate();
     }
+
+    protected abstract BasePresenter getPresenter();
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
