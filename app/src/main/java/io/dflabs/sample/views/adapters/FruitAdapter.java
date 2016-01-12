@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import io.dflabs.lib.adapters.RecyclerListAdapter;
 import io.dflabs.sample.R;
 import io.dflabs.sample.models.pojos.Fruit;
@@ -25,7 +23,7 @@ public class FruitAdapter extends RecyclerListAdapter<Fruit, FruitAdapter.FruitV
 
     @Override
     protected void onBindViewHolder(FruitViewHolder holder, int position, Fruit item) {
-        holder.nameTextView.setText(item.getName());
+        holder.nameTextView.setText(String.format("[%d]: %s", item.getFruitId(), item.getName()));
     }
 
     @Override

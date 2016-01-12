@@ -33,6 +33,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         toolbarEnabled = true;
         homeAsUpEnabled = true;
+        if (mPresenter != null) mPresenter.onCreate();
     }
 
     @Override
@@ -94,6 +95,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if (mPresenter != null) mPresenter.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) mPresenter.onDestroy();
     }
 
     private void setupToolbar() {

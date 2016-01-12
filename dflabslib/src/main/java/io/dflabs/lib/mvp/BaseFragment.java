@@ -1,5 +1,7 @@
 package io.dflabs.lib.mvp;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 /**
@@ -8,7 +10,16 @@ import android.support.v4.app.Fragment;
  */
 public abstract class BaseFragment extends Fragment {
 
-    private BasePresenter mPresenter;
+    protected BasePresenter mPresenter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPresenter = getPresenter();
+        if (mPresenter != null) mPresenter.onCreate();
+    }
+
+    protected abstract BasePresenter getPresenter();
 
     @Override
     public void onStart() {
@@ -37,11 +48,11 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mPresenter != null) mPresenter.onDestroy();
         mPresenter = null;
     }
 
     protected <T extends BasePresenter> void setupPresenter(T basePresenter) {
         this.mPresenter = basePresenter;
     }
-
 }

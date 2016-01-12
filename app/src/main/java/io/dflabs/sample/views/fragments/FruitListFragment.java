@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 import io.dflabs.lib.interfaces.OnLoadMoreItems;
 import io.dflabs.lib.interfaces.OnRefreshItems;
+import io.dflabs.lib.mvp.BaseFragment;
+import io.dflabs.lib.mvp.BasePresenter;
 import io.dflabs.lib.ui.SuperRecyclerView2;
 import io.dflabs.sample.R;
 import io.dflabs.sample.views.adapters.FruitAdapter;
@@ -25,7 +27,7 @@ import io.dflabs.sample.presenters.callback.FruitsCallback;
  * Created by Daniel García Alvarado on 10/13/15.
  * DragonflyLabs Library Sample - danielgarcia
  */
-public class FruitListFragment extends Fragment implements FruitsCallback {
+public class FruitListFragment extends BaseFragment implements FruitsCallback {
 
     private FruitPresenter mFruitPresenter;
     private SuperRecyclerView2 mSuperRecyclerView2;
@@ -40,7 +42,6 @@ public class FruitListFragment extends Fragment implements FruitsCallback {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mFruitPresenter = new FruitPresenter(getContext(), this);
         mAdapter = new FruitAdapter();
         mSuperRecyclerView2 = new SuperRecyclerView2.Builder(getContext())
                 .adapter(mAdapter)
@@ -55,7 +56,7 @@ public class FruitListFragment extends Fragment implements FruitsCallback {
                             public void run() {
                                 mFruitPresenter.refresh(true);
                             }
-                        }, 3000);
+                        }, 1000);
                     }
                 })
                 .pullToRefresh(true, new OnRefreshItems() {
@@ -78,5 +79,11 @@ public class FruitListFragment extends Fragment implements FruitsCallback {
     public void onSuccessFruitsLoaded(ArrayList<Fruit> data, boolean bottomRefresh) {
         mAdapter.update(data, bottomRefresh);
         mSuperRecyclerView2.endRefreshing();
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        mFruitPresenter = new FruitPresenter(getContext(), this);
+        return mFruitPresenter;
     }
 }

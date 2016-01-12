@@ -15,6 +15,10 @@ public abstract class BasePresenter {
     }
 
 
+    public void onCreate() {
+
+    }
+
     public void onStart() {
 
     }
@@ -28,6 +32,10 @@ public abstract class BasePresenter {
     }
 
     public void onStop() {
+
+    }
+
+    public void onDestroy() {
 
     }
 }
