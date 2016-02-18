@@ -1,12 +1,7 @@
 package io.dflabs.lib.validators;
 
 import android.support.design.widget.TextInputLayout;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.TextView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,17 +16,42 @@ public class EditTextValidator extends FormValidator.Validator {
     private final EditText editText;
     private final int errorMessage;
     private final Pattern pattern;
+    private final int minCharacters;
+    private final int maxCharacters;
 
     public EditTextValidator(EditText editText, String regex, int errorMessage) {
         this.editText = editText;
         this.errorMessage = errorMessage;
-        pattern = Pattern.compile(regex);
+        this.minCharacters = -1;
+        this.maxCharacters = -1;
+        this.pattern = Pattern.compile(regex);
+    }
+
+    public EditTextValidator(EditText editText, int minCharacters, int maxCharacters, int errorMessage) {
+        this.editText = editText;
+        this.errorMessage = errorMessage;
+        this.minCharacters = minCharacters;
+        this.maxCharacters = maxCharacters;
+        if (minCharacters < 0) {
+            throw new IllegalArgumentException("[EditTextValidator] Minimum number of characters is 0");
+        }
+        this.pattern = null;
     }
 
     @Override
     public boolean isValid() {
-        Matcher matcher = pattern.matcher(editText.getText().toString().trim());
-        return matcher.matches();
+        boolean valid = true;
+        if (minCharacters != -1) {
+            valid = editText.getText().toString().trim().length() >= minCharacters;
+        }
+        if (maxCharacters != -1) {
+            valid &= maxCharacters >= editText.getText().toString().trim().length();
+        }
+        if (pattern != null) {
+            Matcher matcher = pattern.matcher(editText.getText().toString().trim());
+            return valid & matcher.matches();
+        }
+        return valid;
     }
 
     @Override
@@ -44,7 +64,7 @@ public class EditTextValidator extends FormValidator.Validator {
             TextInputLayout textInputLayout = (TextInputLayout) editText.getParent();
             textInputLayout.setErrorEnabled(true);
             textInputLayout.setError(message != null ? context.getString(message) : null);
-        }catch (ClassCastException ignored){
+        } catch (ClassCastException ignored) {
             editText.setError(message != null ? context.getString(message) : null);
         }
     }
