@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/Users/danielgarcia/.gradle/caches/modules-2/files-2.1/io.realm/realm-android/0.87.2/b2ab753fd2c316f3fb5f4cfbf56641449935c316/realm-android-0.87.2.jar"
+        jar="/desarrollo/dragonflylabs/android/DragonflyLabsLibrary/app/build/intermediates/exploded-aar/io.dflabs/dflabslib/1.0.30/jars/classes.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="b2ab753fd2c316f3fb5f4cfbf56641449935c316">
-        <dex dex="/desarrollo/dragonflylabs/android/DragonflyLabsLibrary/app/build/intermediates/pre-dexed/debug/realm-android-0.87.2-fd99c64eaa75dea766fda8f8ba345a4f8c147ec7.jar" />
+        sha1="6681f384ffdcbe1ea48fce00c0e0415ffa70d267">
+        <dex dex="/desarrollo/dragonflylabs/android/DragonflyLabsLibrary/app/build/intermediates/pre-dexed/debug/classes-c2bf859542d350b13a90dd378cd538b2992f1457.jar" />
     </item>
 
 </items>

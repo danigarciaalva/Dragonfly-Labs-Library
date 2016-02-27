@@ -3,6 +3,7 @@ package io.dflabs.sample.views.activities;
 import android.os.Bundle;
 
 import io.dflabs.lib.mvp.BaseActivity;
+import io.dflabs.lib.mvp.BasePresenter;
 import io.dflabs.sample.views.fragments.FruitListFragment;
 import io.dflabs.sample.R;
 
@@ -21,5 +22,10 @@ public class ToolbarActivity extends BaseActivity {
                 .beginTransaction()
                 .replace(R.id.act_toolbar_content, FruitListFragment.newInstance())
                 .commit();
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return null;
     }
 }
