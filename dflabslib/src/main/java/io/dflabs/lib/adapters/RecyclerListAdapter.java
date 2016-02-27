@@ -106,8 +106,12 @@ public abstract class RecyclerListAdapter<T, VH extends RecyclerView.ViewHolder>
     public void startEndlessLoading() {
         Log.d("Endless Scroll", "Called");
         endlessScrollActive = true;
-        items.add(null);
-        notifyDataSetChanged();
+        try {
+            items.add(null);
+            notifyDataSetChanged();
+        } catch (Exception ignored) {
+            items.remove(items.size() - 1);
+        }
     }
 
 
