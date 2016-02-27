@@ -110,7 +110,7 @@ public abstract class RecyclerListAdapter<T, VH extends RecyclerView.ViewHolder>
             items.add(null);
             notifyDataSetChanged();
         } catch (Exception ignored) {
-            items.remove(items.size() - 1);
+
         }
     }
 
