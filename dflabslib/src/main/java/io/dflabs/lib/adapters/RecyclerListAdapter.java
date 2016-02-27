@@ -1,6 +1,5 @@
 package io.dflabs.lib.adapters;
 
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -40,14 +39,12 @@ public abstract class RecyclerListAdapter<T, VH extends RecyclerView.ViewHolder>
         } else {
             this.items = items;
         }
-        Handler handler = new Handler();
+        try {
+            notifyDataSetChanged();
+        } catch (Exception ignored) {
 
-        final Runnable runnable = new Runnable() {
-            public void run() {
-                notifyDataSetChanged();
-            }
-        };
-        handler.post(runnable);
+        }
+
     }
 
     @Override
