@@ -25,7 +25,7 @@ public class ToolbarActivity extends BaseActivity {
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BasePresenter[] getPresenters() {
         return null;
     }
 }

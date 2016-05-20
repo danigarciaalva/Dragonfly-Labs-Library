@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 public abstract class BaseActivity extends AppCompatActivity {
 
     Toolbar mToolbar;
-    private BasePresenter mPresenter;
+    private BasePresenter[] mPresenters;
     private boolean toolbarEnabled;
     private boolean homeAsUpEnabled;
 
@@ -33,11 +33,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         toolbarEnabled = true;
         homeAsUpEnabled = true;
-        mPresenter = getPresenter();
-        if (mPresenter != null) mPresenter.onCreate();
+        mPresenters = getPresenters();
+        if (mPresenters != null) {
+            for (BasePresenter basePresenter : mPresenters) {
+                if (basePresenter != null) {
+                    basePresenter.onCreate();
+                }
+            }
+        }
     }
 
-    protected abstract BasePresenter getPresenter();
+    protected abstract BasePresenter[] getPresenters();
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -79,31 +85,61 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (mPresenter != null) mPresenter.onStart();
+        if (mPresenters != null) {
+            for (BasePresenter basePresenter : mPresenters) {
+                if (basePresenter != null) {
+                    basePresenter.onStart();
+                }
+            }
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (mPresenter != null) mPresenter.onResume();
+        if (mPresenters != null) {
+            for (BasePresenter basePresenter : mPresenters) {
+                if (basePresenter != null) {
+                    basePresenter.onResume();
+                }
+            }
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mPresenter != null) mPresenter.onPause();
+        if (mPresenters != null) {
+            for (BasePresenter basePresenter : mPresenters) {
+                if (basePresenter != null) {
+                    basePresenter.onPause();
+                }
+            }
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (mPresenter != null) mPresenter.onStop();
+        if (mPresenters != null) {
+            for (BasePresenter basePresenter : mPresenters) {
+                if (basePresenter != null) {
+                    basePresenter.onStop();
+                }
+            }
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mPresenter != null) mPresenter.onDestroy();
+        if (mPresenters != null) {
+            for (BasePresenter basePresenter : mPresenters) {
+                if (basePresenter != null) {
+                    basePresenter.onDestroy();
+                }
+            }
+        }
     }
 
     private void setupToolbar() {
@@ -112,7 +148,4 @@ public abstract class BaseActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    protected <T extends BasePresenter> void setupPresenter(T basePresenter) {
-        this.mPresenter = basePresenter;
-    }
 }
