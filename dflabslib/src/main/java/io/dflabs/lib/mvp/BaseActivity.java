@@ -17,6 +17,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     Toolbar mToolbar;
     private BasePresenter[] mPresenters;
+    private BasePresenter mPresenter;
     private boolean toolbarEnabled;
     private boolean homeAsUpEnabled;
 
@@ -34,6 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         toolbarEnabled = true;
         homeAsUpEnabled = true;
         mPresenters = getPresenters();
+        mPresenter = getPresenter();
         if (mPresenters != null) {
             for (BasePresenter basePresenter : mPresenters) {
                 if (basePresenter != null) {
@@ -41,9 +43,16 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         }
+        if (mPresenter != null) mPresenter.onCreate();
     }
 
-    protected abstract BasePresenter[] getPresenters();
+    protected BasePresenter getPresenter(){
+        return null;
+    }
+
+    protected BasePresenter[] getPresenters(){
+        return null;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -92,6 +101,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         }
+        if (mPresenter != null) mPresenter.onStart();
     }
 
     @Override
@@ -104,6 +114,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         }
+        if (mPresenter != null) mPresenter.onResume();
     }
 
     @Override
@@ -116,6 +127,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         }
+        if (mPresenter != null) mPresenter.onPause();
     }
 
     @Override
@@ -128,6 +140,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         }
+        if (mPresenter != null) mPresenter.onStop();
     }
 
     @Override
@@ -140,6 +153,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         }
+        if (mPresenter != null) mPresenter.onDestroy();
     }
 
     private void setupToolbar() {
