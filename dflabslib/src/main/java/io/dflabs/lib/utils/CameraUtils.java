@@ -3,6 +3,7 @@ package io.dflabs.lib.utils;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ClipData;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,7 +89,7 @@ public class CameraUtils {
         if (allowMultiple) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                 Intent intent = new Intent();
-                intent.setType("image/*");
+                intent.setType("image/video");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 context.startActivityForResult(Intent.createChooser(intent, context.getString(message)),
@@ -112,7 +114,7 @@ public class CameraUtils {
         if (allowMultiple) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                 Intent intent = new Intent();
-                intent.setType("image/*");
+                intent.setType("image/video");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 context.startActivityForResult(Intent.createChooser(intent, context.getString(message)),
@@ -136,11 +138,26 @@ public class CameraUtils {
             }
         } else if (requestCode == REQUEST_IMPORT_PHOTO && resultCode == AppCompatActivity.RESULT_OK
                 && null != data) {
-            Uri selectedImage = data.getData();
-            if (selectedImage != null) {
-                CameraImportTask task = new CameraImportTask(context, new Uri[]{selectedImage},
-                        onPhotoPhotoImport);
-                task.execute();
+            Uri selectedFile = data.getData();
+            if (selectedFile != null) {
+                ContentResolver contentResolver = context.getContentResolver();
+                String mediaType = contentResolver.getType(selectedFile);
+                if (mediaType != null) {
+                    if (mediaType.contains("image")) {
+                        CameraImportTask task = new CameraImportTask(context, new Uri[]{selectedFile},
+                                onPhotoPhotoImport);
+                        task.execute();
+                    } else if (mediaType.contains("video")) {
+                        File file = new File(CameraImportTask.getRealPathFromURI(context, selectedFile));
+                        onPhotoPhotoImport.onVideoImport(file);
+                    } else {
+                        onPhotoPhotoImport.onErrorImport(new RuntimeException("Incompatible media type"));
+                        Log.d("Error", "Incompatible media type");
+                    }
+                } else {
+                    onPhotoPhotoImport.onErrorImport(new RuntimeException("Media type null"));
+                    Log.d("Error", "Media type null");
+                }
             } else {
                 ClipData clipData = data.getClipData();
                 if (clipData != null) {

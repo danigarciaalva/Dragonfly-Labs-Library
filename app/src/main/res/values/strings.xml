@@ -18,4 +18,5 @@
     <string name="take_photo">Take photo</string>
     <string name="import_photo">Import photo</string>
     <string name="no_data">Empty data</string>
+    <string name="photo">TAKE MEDIA</string>
 </resources>
