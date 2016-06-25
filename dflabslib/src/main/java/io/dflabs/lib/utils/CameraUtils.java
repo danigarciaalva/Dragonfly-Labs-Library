@@ -129,6 +129,20 @@ public class CameraUtils {
         }
     }
 
+    public void importMedia(Fragment context, @StringRes int message,
+                       OnPhotoPhotoImport callback){
+        this.context = context.getContext();
+        this.onPhotoPhotoImport = callback;
+        if (callback == null) {
+            throw new NullPointerException("OnMultiplePhotoImport must not be null");
+        }
+        Intent intent = new Intent();
+        intent.setType("image/video");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        context.startActivityForResult(Intent.createChooser(intent, context.getString(message)),
+                REQUEST_IMPORT_PHOTO);
+    }
+
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
