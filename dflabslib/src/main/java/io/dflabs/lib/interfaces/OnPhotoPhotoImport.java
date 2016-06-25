@@ -10,9 +10,11 @@ import java.util.ArrayList;
  * Gastalon - danielgarcia
  */
 public interface OnPhotoPhotoImport {
-    void onPhotoImport(Bitmap fullBitmap, File path);
+    void onPhotoImport(Bitmap fullBitmap, File file);
 
     void onStartImport();
 
     void onErrorImport(Exception exception);
+
+    void onVideoImport(File file);
 }

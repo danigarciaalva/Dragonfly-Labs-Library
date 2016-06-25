@@ -57,7 +57,7 @@ public class CameraImportTask extends AsyncTask<Void, CameraImportTask.FileBitma
         return true;
     }
 
-    public String getRealPathFromURI(Uri contentUri) {
+    public static String getRealPathFromURI(Context context, Uri contentUri) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
             String[] projection = {MediaStore.Images.Media.DATA};
 
@@ -78,7 +78,7 @@ public class CameraImportTask extends AsyncTask<Void, CameraImportTask.FileBitma
     @Override
     protected void onProgressUpdate(FileBitmap... values) {
         super.onProgressUpdate(values);
-        onPhotoPhotoImport.onPhotoImport(values[0].bitmap, new File(getRealPathFromURI(values[0].file)));
+        onPhotoPhotoImport.onPhotoImport(values[0].bitmap, new File(getRealPathFromURI(context, values[0].file)));
 
     }
 
