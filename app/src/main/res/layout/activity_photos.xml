@@ -8,15 +8,15 @@
         android:id="@+id/act_toolbar_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="IMPORTAR FOTO O VIDEO®"/>
+        android:text="@string/import_photo_or_video"/>
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"/>
 
-    <FrameLayout
-        android:id="@+id/act_toolbar_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/act_photos_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

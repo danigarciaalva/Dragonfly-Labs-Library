@@ -12,7 +12,7 @@ import android.provider.MediaStore;
 import java.io.File;
 import java.io.InputStream;
 
-import io.dflabs.lib.interfaces.OnPhotoPhotoImport;
+import io.dflabs.lib.interfaces.OnPhotoImport;
 
 /**
  * Created by Daniel García Alvarado on 10/11/15.
@@ -21,20 +21,20 @@ import io.dflabs.lib.interfaces.OnPhotoPhotoImport;
 public class CameraImportTask extends AsyncTask<Void, CameraImportTask.FileBitmap, Boolean> {
 
     private final Uri[] uris;
-    private OnPhotoPhotoImport onPhotoPhotoImport;
+    private OnPhotoImport onPhotoImport;
     private final Context context;
     private Exception exception;
 
-    public CameraImportTask(Context context, Uri[] uris, OnPhotoPhotoImport onPhotoPhotoImport) {
+    public CameraImportTask(Context context, Uri[] uris, OnPhotoImport onPhotoImport) {
         this.context = context;
         this.uris = uris;
-        this.onPhotoPhotoImport = onPhotoPhotoImport;
+        this.onPhotoImport = onPhotoImport;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        onPhotoPhotoImport.onStartImport();
+        onPhotoImport.onStartImport();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class CameraImportTask extends AsyncTask<Void, CameraImportTask.FileBitma
             String[] projection = {MediaStore.Images.Media.DATA};
 
             CursorLoader cursorLoader = new CursorLoader(context, contentUri, projection, null, null, null);
-            Cursor cursor = null;
+            Cursor cursor;
 
             cursor = cursorLoader.loadInBackground();
 
@@ -78,14 +78,15 @@ public class CameraImportTask extends AsyncTask<Void, CameraImportTask.FileBitma
     @Override
     protected void onProgressUpdate(FileBitmap... values) {
         super.onProgressUpdate(values);
-        onPhotoPhotoImport.onPhotoImport(values[0].bitmap, new File(getRealPathFromURI(context, values[0].file)));
+        onPhotoImport.onPhotoImport(values[0].bitmap, new File(getRealPathFromURI(context, values[0].file)));
 
     }
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
-        if (!aBoolean) onPhotoPhotoImport.onErrorImport(exception);
+        if (!aBoolean) onPhotoImport.onErrorImport(exception);
+        else onPhotoImport.onSuccessImport();
     }
 
     class FileBitmap {

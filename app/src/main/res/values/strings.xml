@@ -18,5 +18,6 @@
     <string name="take_photo">Take photo</string>
     <string name="import_photo">Import photo</string>
     <string name="no_data">Empty data</string>
-    <string name="photo">TAKE MEDIA</string>
+    <string name="import_photo_or_video">IMPORTAR FOTO O VIDEO®</string>
+    <string name="content_description">Content description!</string>
 </resources>

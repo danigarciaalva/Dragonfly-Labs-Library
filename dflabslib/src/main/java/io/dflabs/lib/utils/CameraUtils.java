@@ -3,7 +3,6 @@ package io.dflabs.lib.utils;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ClipData;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,15 +14,15 @@ import android.provider.MediaStore;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import io.dflabs.lib.interfaces.OnPhotoPhotoImport;
+import io.dflabs.lib.interfaces.OnPhotoImport;
 import io.dflabs.lib.interfaces.OnPhotoTaken;
+import io.dflabs.lib.interfaces.OnVideoImport;
 
 /**
  * Created by Daniel García Alvarado on 7/5/15.
@@ -34,12 +33,15 @@ public class CameraUtils {
 
     public static final int REQUEST_TAKE_PHOTO = 0x999;
     public static final int REQUEST_IMPORT_PHOTO = 0x998;
-    OnPhotoPhotoImport onPhotoPhotoImport;
+    private static final int REQUEST_IMPORT_VIDEO = 0x997;
+    OnPhotoImport onPhotoImport;
     private File photoFile;
     private OnPhotoTaken onPhotoTaken;
     private Context context;
+    private OnVideoImport onVideoImport;
 
-    public void takePhoto(AppCompatActivity context, OnPhotoTaken onPhotoTaken) {
+    private void takePhoto(Context context, OnPhotoTaken onPhotoTaken, Fragment fragment,
+                           AppCompatActivity appCompatActivity) {
         this.context = context;
         this.onPhotoTaken = onPhotoTaken;
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -52,95 +54,96 @@ public class CameraUtils {
             if (photoFile != null) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
-                context.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                if (fragment != null) {
+                    fragment.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                } else if (appCompatActivity != null) {
+                    appCompatActivity.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                }
             }
         } else {
             onPhotoTaken.onPhotoError(new IllegalStateException("Not camera app installed"));
         }
     }
 
+    public void takePhoto(AppCompatActivity context, OnPhotoTaken onPhotoTaken) {
+        takePhoto(context, onPhotoTaken, null, context);
+    }
+
     public void takePhoto(Fragment context, OnPhotoTaken onPhotoTaken) {
-        this.context = context.getContext();
-        this.onPhotoTaken = onPhotoTaken;
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(this.context.getPackageManager()) != null) {
-            try {
-                photoFile = createImageFile();
-            } catch (IOException e) {
-                onPhotoTaken.onPhotoError(e);
-            }
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                context.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+        takePhoto(context.getContext(), onPhotoTaken, context, null);
+    }
+
+    private void importPhoto(Context context, @StringRes int message, OnPhotoImport callback, boolean allowMultiple,
+                             Fragment fragment, AppCompatActivity activity) {
+        this.context = context;
+        this.onPhotoImport = callback;
+        if (callback == null) {
+            throw new NullPointerException("OnMultiplePhotoImport must not be null");
+        }
+        if (allowMultiple) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                if (fragment != null) {
+                    fragment.startActivityForResult(Intent.createChooser(intent, context.getString(message)),
+                            REQUEST_IMPORT_PHOTO);
+                } else if (activity != null) {
+                    activity.startActivityForResult(Intent.createChooser(intent, context.getString(message)),
+                            REQUEST_IMPORT_PHOTO);
+                }
+            } else {
+                throw new IllegalArgumentException("Multiple import require minimum API 18");
             }
         } else {
-            onPhotoTaken.onPhotoError(new IllegalStateException("Not camera app installed"));
+            Intent i = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            if (fragment != null) {
+                fragment.startActivityForResult(i, REQUEST_IMPORT_PHOTO);
+            } else if (activity != null) {
+                activity.startActivityForResult(i, REQUEST_IMPORT_PHOTO);
+            }
         }
     }
 
     public void importPhoto(AppCompatActivity context, @StringRes int message,
-                            OnPhotoPhotoImport callback, boolean allowMultiple) {
-        this.context = context;
-        this.onPhotoPhotoImport = callback;
-        if (callback == null) {
-            throw new NullPointerException("OnMultiplePhotoImport must not be null");
-        }
-        if (allowMultiple) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                Intent intent = new Intent();
-                intent.setType("image/video");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                context.startActivityForResult(Intent.createChooser(intent, context.getString(message)),
-                        REQUEST_IMPORT_PHOTO);
-            } else {
-                throw new IllegalArgumentException("Multiple import require minimum API 18");
-            }
-        } else {
-            Intent i = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            context.startActivityForResult(i, REQUEST_IMPORT_PHOTO);
-        }
+                            OnPhotoImport callback, boolean allowMultiple) {
+        importPhoto(context, message, callback, allowMultiple, null, context);
     }
 
     public void importPhoto(Fragment context, @StringRes int message,
-                            OnPhotoPhotoImport callback, boolean allowMultiple) {
-        this.context = context.getContext();
-        this.onPhotoPhotoImport = callback;
-        if (callback == null) {
-            throw new NullPointerException("OnMultiplePhotoImport must not be null");
-        }
-        if (allowMultiple) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                Intent intent = new Intent();
-                intent.setType("image/video");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                context.startActivityForResult(Intent.createChooser(intent, context.getString(message)),
-                        REQUEST_IMPORT_PHOTO);
-            } else {
-                throw new IllegalArgumentException("Multiple import require minimum API 18");
-            }
-        } else {
-            Intent i = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            context.startActivityForResult(i, REQUEST_IMPORT_PHOTO);
-        }
+                            OnPhotoImport callback, boolean allowMultiple) {
+        importPhoto(context.getContext(), message, callback, allowMultiple, context, null);
     }
 
-    public void importMedia(Fragment context, @StringRes int message,
-                       OnPhotoPhotoImport callback){
-        this.context = context.getContext();
-        this.onPhotoPhotoImport = callback;
+    public void importVideo(Fragment context, @StringRes int message,
+                            OnPhotoImport callback) {
+        importVideo(context.getContext(), message, callback, context, null);
+    }
+
+    public void importVideo(AppCompatActivity context, @StringRes int message,
+                            OnPhotoImport callback) {
+        importVideo(context, message, callback, null, context);
+    }
+
+    private void importVideo(Context context, @StringRes int message,
+                             OnPhotoImport callback, Fragment fragment, AppCompatActivity appCompatActivity) {
+        this.context = context;
+        this.onPhotoImport = callback;
         if (callback == null) {
-            throw new NullPointerException("OnMultiplePhotoImport must not be null");
+            throw new NullPointerException("OnPhotoImport must not be null");
         }
         Intent intent = new Intent();
-        intent.setType("image/video");
+        intent.setType("video/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        context.startActivityForResult(Intent.createChooser(intent, context.getString(message)),
-                REQUEST_IMPORT_PHOTO);
+        if (fragment != null) {
+            fragment.startActivityForResult(Intent.createChooser(intent, context.getString(message)),
+                    REQUEST_IMPORT_VIDEO);
+        } else if (appCompatActivity != null) {
+            appCompatActivity.startActivityForResult(Intent.createChooser(intent, context.getString(message)),
+                    REQUEST_IMPORT_VIDEO);
+        }
     }
 
 
@@ -154,24 +157,9 @@ public class CameraUtils {
                 && null != data) {
             Uri selectedFile = data.getData();
             if (selectedFile != null) {
-                ContentResolver contentResolver = context.getContentResolver();
-                String mediaType = contentResolver.getType(selectedFile);
-                if (mediaType != null) {
-                    if (mediaType.contains("image")) {
-                        CameraImportTask task = new CameraImportTask(context, new Uri[]{selectedFile},
-                                onPhotoPhotoImport);
-                        task.execute();
-                    } else if (mediaType.contains("video")) {
-                        File file = new File(CameraImportTask.getRealPathFromURI(context, selectedFile));
-                        onPhotoPhotoImport.onVideoImport(file);
-                    } else {
-                        onPhotoPhotoImport.onErrorImport(new RuntimeException("Incompatible media type"));
-                        Log.d("Error", "Incompatible media type");
-                    }
-                } else {
-                    onPhotoPhotoImport.onErrorImport(new RuntimeException("Media type null"));
-                    Log.d("Error", "Media type null");
-                }
+                CameraImportTask task = new CameraImportTask(context, new Uri[]{selectedFile},
+                        onPhotoImport);
+                task.execute();
             } else {
                 ClipData clipData = data.getClipData();
                 if (clipData != null) {
@@ -179,10 +167,17 @@ public class CameraUtils {
                     for (int i = 0; i < clipData.getItemCount(); i++) {
                         uris[i] = clipData.getItemAt(i).getUri();
                     }
-                    CameraImportTask task = new CameraImportTask(context, uris, onPhotoPhotoImport);
+                    CameraImportTask task = new CameraImportTask(context, uris, onPhotoImport);
                     task.execute();
+                } else {
+                    onPhotoImport.onErrorImport(new RuntimeException("Photos not loaded"));
                 }
             }
+        } else if (requestCode == REQUEST_IMPORT_VIDEO && resultCode == AppCompatActivity.RESULT_OK) {
+            Uri selectedFile = data.getData();
+            File file = new File(CameraImportTask.getRealPathFromURI(context, selectedFile));
+            onVideoImport.onVideoImport(file);
+            onVideoImport.onSuccessImport();
         }
     }
 
