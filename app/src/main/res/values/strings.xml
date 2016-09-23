@@ -20,4 +20,11 @@
     <string name="no_data">Empty data</string>
     <string name="import_photo_or_video">IMPORTAR FOTO O VIDEO®</string>
     <string name="content_description">Content description!</string>
+    <string name="partial_injury_injured">sdfsd</string>
+    <string name="partial_injury_death">sdfsdfds</string>
+    <string name="partial_injury_parts">sdfsdfsd</string>
+    <string name="partial_injury_add_part">dfsdf</string>
+    <string name="partial_injury_ambulance">sdfsdfs</string>
+    <string name="partial_injury_other_place">sdfsdf</string>
+    <string name="partial_injury_other_place_text">sdfsdfsd</string>
 </resources>

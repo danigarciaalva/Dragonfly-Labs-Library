@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/partial_injury"
+            style="@style/Base.TextAppearance.AppCompat.Subhead.Inverse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="12dp"
+            android:text="xcvxcvxcv"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/partial_injury_injured"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/partial_injury_injured"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/partial_injury_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+
+                    <EditText
+                        android:id="@+id/partial_injury_level"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="asjdoajsod"
+                        tools:text="@string/app_name"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <Button
+                    android:id="@+id/partial_injury_add_part"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/partial_injury_add_part"/>
+
+                <CheckBox
+                    android:id="@+id/partial_injury_ambulance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/partial_injury_ambulance"/>
+
+                <LinearLayout
+                    android:id="@+id/partial_injury_ambulance_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp">
+
+                        <EditText
+                            android:id="@+id/partial_injury_ambulance_state"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="sdfsdfsdf"
+                            tools:text="@string/app_name"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp">
+
+                        <EditText
+                            android:id="@+id/partial_injury_ambulance_place"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="sdfsdfsdf"
+                            tools:text="@string/app_name"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <CheckBox
+                        android:id="@+id/partial_injury_other_place"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="lalalalal"/>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/partial_injury_other_place_text_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:visibility="gone">
+
+                        <EditText
+                            android:id="@+id/partial_injury_other_place_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/partial_injury_other_place_text"
+                            android:inputType="text"
+                            tools:text="@string/app_name"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/lalalala"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LALALA"/>
+
+</LinearLayout>

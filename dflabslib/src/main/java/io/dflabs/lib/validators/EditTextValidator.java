@@ -19,6 +19,7 @@ public class EditTextValidator extends FormValidator.Validator {
     private final int minCharacters;
     private final int maxCharacters;
 
+
     public EditTextValidator(EditText editText, String regex, int errorMessage) {
         this.editText = editText;
         this.errorMessage = errorMessage;
