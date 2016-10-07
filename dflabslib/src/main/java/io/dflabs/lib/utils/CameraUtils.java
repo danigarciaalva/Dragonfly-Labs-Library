@@ -152,6 +152,8 @@ public class CameraUtils {
         if (requestCode == CameraUtils.REQUEST_TAKE_PHOTO) {
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 onPhotoTaken.onPhotoSuccess(fullBitmap(), photoFile);
+            } else {
+                onPhotoTaken.onPhotoCanceled();
             }
         } else if (requestCode == REQUEST_IMPORT_PHOTO && resultCode == AppCompatActivity.RESULT_OK
                 && null != data) {
