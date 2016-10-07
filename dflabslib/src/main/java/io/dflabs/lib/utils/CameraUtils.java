@@ -153,7 +153,7 @@ public class CameraUtils {
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 onPhotoTaken.onPhotoSuccess(fullBitmap(), photoFile);
             } else {
-                onPhotoTaken.onPhotoCanceled();
+                onPhotoTaken.onPhotoCancelled();
             }
         } else if (requestCode == REQUEST_IMPORT_PHOTO && resultCode == AppCompatActivity.RESULT_OK
                 && null != data) {
