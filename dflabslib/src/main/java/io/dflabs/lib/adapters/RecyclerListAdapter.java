@@ -32,7 +32,9 @@ public abstract class RecyclerListAdapter<T, VH extends RecyclerView.ViewHolder>
         }
         if (endlessScrollActive && this.items.size() > 0) {
             endlessScrollActive = false;
-            this.items.remove(this.items.size() - 1);
+            if (this.items.get(this.items.size() - 1) == null){
+                this.items.remove(this.items.size() - 1);
+            }
         }
         if (appendBottom) {
             this.items.addAll(items);
