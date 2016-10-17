@@ -39,6 +39,14 @@ public class FormValidator {
         }
     }
 
+    public boolean isEdit(){
+        boolean edit = false;
+        for(Validator v : mValidators){
+            edit |= v.isValid();
+        }
+        return edit;
+    }
+
     public boolean isValid(){
         boolean valid = true;
         if(showAllErrors){
