@@ -1,5 +1,6 @@
 package io.dflabs.lib.validators;
 
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -20,20 +21,20 @@ public class DateValidator extends FormValidator.Validator {
     public static final int EQUAL_DATE = 4;
     public static final int NOT_EQUAL_DATE = 5;
 
-    private final String dateString;
+    private final EditText dateEditText;
     private final String dateCompare;
     private final int errorMessage;
     private final int typeValidate;
 
-    public DateValidator(String dateString, int typeValidate, int errorMessage) {
-        this.dateString = dateString;
+    public DateValidator(EditText dateEditText, int typeValidate, int errorMessage) {
+        this.dateEditText = dateEditText;
         this.errorMessage = errorMessage;
         this.typeValidate = typeValidate;
         this.dateCompare = "";
     }
 
-    public DateValidator(String dateString, String dateCompare, int typeValidate, int errorMessage) {
-        this.dateString = dateString;
+    public DateValidator(EditText dateEditText, String dateCompare, int typeValidate, int errorMessage) {
+        this.dateEditText = dateEditText;
         this.errorMessage = errorMessage;
         this.typeValidate = typeValidate;
         this.dateCompare = dateCompare;
@@ -49,29 +50,29 @@ public class DateValidator extends FormValidator.Validator {
             switch (typeValidate) {
                 case BEFORE_DATE_SYSTEM:
                     dateSecond = formatDate.parse(formatDate.format(new Date()));
-                    dateFirst = formatDate.parse(dateString);
+                    dateFirst = formatDate.parse(dateEditText.getText().toString().trim());
                     if (dateFirst.equals(dateSecond) || dateFirst.after(dateSecond)) {
                         valid = false;
                     }
                     break;
                 case BEFORE_DATE:
                     dateSecond = formatDate.parse(dateCompare);
-                    dateFirst = formatDate.parse(dateString);
+                    dateFirst = formatDate.parse(dateEditText.getText().toString().trim());
                     valid = dateFirst.before(dateSecond);
                     break;
                 case AFTER_DATE:
                     dateSecond = formatDate.parse(dateCompare);
-                    dateFirst = formatDate.parse(dateString);
+                    dateFirst = formatDate.parse(dateEditText.getText().toString().trim());
                     valid = dateFirst.after(dateSecond);
                     break;
                 case EQUAL_DATE:
                     dateSecond = formatDate.parse(dateCompare);
-                    dateFirst = formatDate.parse(dateString);
+                    dateFirst = formatDate.parse(dateEditText.getText().toString().trim());
                     valid = dateFirst.equals(dateSecond);
                     break;
                 case NOT_EQUAL_DATE:
                     dateSecond = formatDate.parse(dateCompare);
-                    dateFirst = formatDate.parse(dateString);
+                    dateFirst = formatDate.parse(dateEditText.getText().toString().trim());
                     valid = !dateFirst.equals(dateSecond);
                     break;
             }
