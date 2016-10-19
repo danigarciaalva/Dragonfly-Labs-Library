@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import io.dflabs.lib.interfaces.OnPhotoImport;
 import io.dflabs.lib.mvp.BaseActivity;
 import io.dflabs.lib.utils.CameraUtils;
+import io.dflabs.lib.validators.DateValidator;
+import io.dflabs.lib.validators.FormValidator;
 import io.dflabs.sample.R;
 import io.dflabs.sample.views.adapters.PhotosAdapter;
 
@@ -46,6 +48,13 @@ public class PhotosActivity extends BaseActivity implements OnPhotoImport {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.act_photos_recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mPhotosAdapter = new PhotosAdapter());
+
+        FormValidator formValidator = new FormValidator(this, true);
+        formValidator.addValidators( new DateValidator("22/10/2015", "23/10/2015", DateValidator.NOT_EQUAL_DATE, R.string.test_date));
+
+        if (formValidator.isValid()){
+            Toast.makeText(this, "Date correct", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
